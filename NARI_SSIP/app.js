@@ -1,16 +1,30 @@
-import express from 'express'
-import mongoose from 'mongoose'
-import router from "./routers/user-routs.js";
+/* eslint-disable no-undef */
+import 'dotenv/config';
+import express from 'express';
+import mongoose from 'mongoose';
+import router from './routers/user.js';
 
+const PORT = process.env.PORT || 3000;
+const MONGODB = process.env.MONGODB;
 
-const app = express()
+const app = express();
 app.use(express.json());
-app.use("/api/user",router);
-mongoose.connect('mongodb+srv://kushacharya:kta449269@cluster0.5m03efq.mongodb.net/nari?retryWrites=true&w=majority')
-  .then(() => app.listen(3000))
-  .then(() => console.log('connected and listening to localhost on 3000'))
-// eslint-disable-next-line no-undef
-  .catch(() => console.log(err))
+app.use('/api/user', router);
+
+mongoose.set('strictQuery', false);
+mongoose
+  .connect(MONGODB, {
+    useNewUrlParser: true,
+  })
+  .then(() => {
+    console.log('connected to mongodb');
+    app.listen(PORT, () => {
+      console.log(`server is running at ${PORT}`);
+    });
+  })
+  .catch((err) => {
+    console.log(`error while connecting to mongodb ${err}`);
+  });
 
 // password: kta449269
 // app.listen(3000);
