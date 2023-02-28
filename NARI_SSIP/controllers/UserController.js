@@ -88,7 +88,7 @@ export const signup = async (req, res, next) => {
   } catch (err) {
     return console.log(err);
   }
-  return res.status(201).json({ AuthToken });
+  return res.status(201).json({message:"Sign up successfully!"});
 };
 
 export const login = async (req, res, next) => {
@@ -124,5 +124,5 @@ const isPasswordCoreect = bcryptjs.compareSync(unique,user.password);
   if (!isPasswordCoreect) {
     res.status(400).json({ message: 'Password is incorrect' });
   }
-  return res.status(200).json({ AuthToken });
+  return res.status(200).json({ message:"login Succesfully!"});
 };
