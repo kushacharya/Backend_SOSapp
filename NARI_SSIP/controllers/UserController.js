@@ -4,6 +4,7 @@ import bcryptjs from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
 const JWT_SECRET = 'nari2212';
+const unique = 'password';
 
 // eslint-disable-next-line no-unused-vars
 export const getAllUser = async (req, res, next) => {
@@ -20,6 +21,8 @@ export const getAllUser = async (req, res, next) => {
   return res.status(200).json({ users });
 };
 
+
+// SignUp
 export const signup = async (req, res, next) => {
   const {
     name,
@@ -51,7 +54,7 @@ export const signup = async (req, res, next) => {
     });
   }
   const salt = await bcryptjs.genSalt(10);
-  const hashedPassword = await bcryptjs.hashSync(password, salt);
+  const hashedPassword = await bcryptjs.hashSync(unique, salt);
   const user = new User({
     name: req.body.name,
     email: req.body.email,
@@ -111,9 +114,15 @@ export const login = async (req, res, next) => {
       .json({ message: "Couldn't find user with this email!" });
   }
 
-  const isPasswordCoreect = bcryptjs.compareSync(password, user.password);
+
+  
+const isPasswordCoreect = bcryptjs.compareSync(unique,user.password);
+
+  
+
+  // const isPasswordCoreect = bcryptjs.compareSync(password, unique);
   if (!isPasswordCoreect) {
-    res.status(400).json({ message: 'Enter correct password' });
+    res.status(400).json({ message: 'Password is incorrect' });
   }
   return res.status(200).json({ AuthToken });
 };
