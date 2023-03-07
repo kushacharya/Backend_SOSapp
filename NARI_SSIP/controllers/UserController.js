@@ -1,7 +1,11 @@
 /* eslint-disable no-unused-vars */
+import 'dotenv/config';
 import User from '../model/UserModel.js';
 import bcryptjs from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+
+const sid = process.env.ACCOUNT_SID;
+const AuthToken = process.env.AUTH_TOKEN;
 
 const JWT_SECRET = 'nari2212';
 const unique = 'password';
