@@ -126,3 +126,18 @@ const isPasswordCoreect = bcryptjs.compareSync(unique,user.password);
   }
   return res.status(200).json({ message:"login Succesfully!"});
 };
+
+export const getuser = async(req, res) =>{
+  const userId = req.params.id;
+  let userDetails;
+  try {
+    userDetails = await User.findById(userId);
+    res.status(200).json({userDetails});
+  } catch (err) {
+    console.log(err);
+  }
+
+  if (!userDetails) {
+     res.status(400).json({message:"Check UserId!"});
+  }
+}

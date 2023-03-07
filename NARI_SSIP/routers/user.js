@@ -1,10 +1,11 @@
 import express from 'express';
-import {signup, login } from '../controllers/UserController.js';
+import {signup, login,getuser } from '../controllers/UserController.js';
 
 const router = express.Router();
 
 //TODO exposing all users is a big privacy concern. Not required unless it has a significant business impact.
-//router.get('/',getAllUser);
+// router.get('/',getAllUser);
 router.post('/signup', signup);
 router.post('/login', login);
+router.get('/getuser/:id', getuser);
 export default router;
