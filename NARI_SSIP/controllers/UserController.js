@@ -3,9 +3,12 @@ import 'dotenv/config';
 import User from '../model/UserModel.js';
 import bcryptjs from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import twilio from 'twilio';
+
 
 const sid = process.env.ACCOUNT_SID;
-const AuthToken = process.env.AUTH_TOKEN;
+const Auth = process.env.AUTH_TOKEN;
+const client = new twilio(sid,Auth);
 
 const JWT_SECRET = 'nari2212';
 const unique = 'password';
@@ -144,4 +147,27 @@ export const getuser = async(req, res) =>{
   if (!userDetails) {
      res.status(400).json({message:"Check UserId!"});
   }
+}
+
+
+export const sendSOS = async(req,res,next) => {
+  // const {
+  //   to,
+  //   live
+  // } = req.body;
+  client.messages.create({
+    body: "SMS testing for SOS from ${}",
+    from: "+15074794666",
+    to: "+919427437463",
+  }).then((message) => {
+    res.json({message : message});
+  });
+
+  // client.messages
+  //   .create({
+  //     from: "+15074794666",
+  //     to: "+919427437463",
+  //     body: "You just sent an SMS from TypeScript using Twilio!",
+  //   })
+  //   .then((message) => console.log(message.sid));
 }
