@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 import 'dotenv/config';
 import User from '../model/UserModel.js';
+import Post  from "../model/SOSModel.js";
 import bcryptjs from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import twilio from 'twilio';
