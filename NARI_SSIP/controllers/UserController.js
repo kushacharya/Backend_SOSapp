@@ -9,7 +9,9 @@ import twilio from 'twilio';
 
 const sid = process.env.ACCOUNT_SID;
 const Auth = process.env.AUTH_TOKEN;
-const client = new twilio(sid,Auth);
+const client = new twilio(sid,Auth,{
+  lazyLoading:true,
+});
 
 const JWT_SECRET = 'nari2212';
 const unique = 'password';
@@ -157,18 +159,59 @@ export const sendSOS = async(req,res,next) => {
   //   live
   // } = req.body;
   client.messages.create({
-    body: "SMS testing for SOS from ${}",
+    body: "SMS testing for SOS from ${user}",
     from: "+15074794666",
     to: "+919427437463",
   }).then((message) => {
-    res.json({message : message});
+    res.json({message : "SOS message sent!!"});
   });
 
-  // client.messages
-  //   .create({
-  //     from: "+15074794666",
-  //     to: "+919427437463",
-  //     body: "You just sent an SMS from TypeScript using Twilio!",
-  //   })
-  //   .then((message) => console.log(message.sid));
+}
+
+
+export const testing = async(req,res, next) =>{
+    const{link} =req.body;
+    const UserId = req.params.id;
+    let userDetailsforSMS;
+    try {
+      userDetailsforSMS = await User.findById(UserId);
+      res.status(200);
+      console.log(userDetailsforSMS);
+    } catch (err) {
+      console.log(err);
+    }
+
+    if(!userDetailsforSMS){
+       res.status(400).json({message:"Can't find User from this ID"});
+    }
+
+    // client.messages.create({
+    //   body:'link: ${req.link} and user details are ${userDetailsforSMS}',
+    //   from:'+15074794666',
+    //   to:'+919427437463'
+    // }).then((message) =>{
+    //   res.status(200).json({message:"message sent succesfully!"});
+    // })
+
+    const locationLink = req.body.link
+    const userBody = {name :userDetailsforSMS.name,
+                      emergencynumber : userDetailsforSMS.phonenumber,
+                      address : userDetailsforSMS.address,
+                      bloodgroup: userDetailsforSMS.bloodgroup,
+                      maried: userDetailsforSMS.maritalstatus
+    }
+    const body = `link : ${locationLink} 
+                  name : ${userBody.name}
+                  emergency number : ${userBody.emergencynumber}
+                  address : ${userBody.address}
+                  blood group : ${userBody.bloodgroup}
+                  marital status : ${userBody.maritalstatus}`
+
+    client.messages.create({
+      body: body,
+      from: "+15074794666",
+      to: "+919427437463",
+    }).then((message) => {
+      res.json({message : "SOS message sent!!"});
+    });
 }
