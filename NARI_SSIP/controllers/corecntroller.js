@@ -1,5 +1,4 @@
 import 'dotenv/config';
-import reactdom from 'react-dom/server'
 import twilio from 'twilio'
 
 
@@ -37,7 +36,7 @@ export const sosbody = async(req,res,next) => {
     from : "+15074794666",
     to : "+919427437463"
     // to : reqbody.guardians  //due to twilio policy I cant send testing messages other than registered number.
-   }).then((message) = > {
+   }).then((message)  => {
      res.status(200).json({message : "SOS msg sent succesfully!"});
    })
     }

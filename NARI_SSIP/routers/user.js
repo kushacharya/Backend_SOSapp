@@ -1,6 +1,6 @@
 import express from 'express';
 import {signup, login,getuser, testing } from '../controllers/UserController.js';
-import { sosbody } from "../controllers/corecntroller";
+import { sosbody } from "../controllers/corecntroller.js";
 
 const router = express.Router();
 
