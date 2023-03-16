@@ -1,5 +1,6 @@
 import express from 'express';
 import {signup, login,getuser,sendSOS, testing } from '../controllers/UserController.js';
+import { sosbody } from "../controllers/corecntroller";
 
 const router = express.Router();
 
@@ -8,6 +9,10 @@ const router = express.Router();
 router.post('/signup', signup);
 router.post('/login', login);
 router.get('/getuser/:id', getuser);
-router.get('/SOS', sendSOS);
+// router.get('/SOS', sendSOS);
 router.post('/testing/:id', testing)
+
+// corecontroller
+router.post('/SOS',sosbody);
+
 export default router;

@@ -170,7 +170,7 @@ export const sendSOS = async(req,res,next) => {
 
 
 export const testing = async(req,res, next) =>{
-    const{link} =req.body;
+    const{link, id} =req.body;
     const UserId = req.params.id;
     let userDetailsforSMS;
     try {
