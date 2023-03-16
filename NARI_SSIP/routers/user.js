@@ -1,5 +1,5 @@
 import express from 'express';
-import {signup, login,getuser,sendSOS, testing } from '../controllers/UserController.js';
+import {signup, login,getuser, testing } from '../controllers/UserController.js';
 import { sosbody } from "../controllers/corecntroller";
 
 const router = express.Router();
@@ -13,6 +13,6 @@ router.get('/getuser/:id', getuser);
 router.post('/testing/:id', testing)
 
 // corecontroller
-router.post('/SOS',sosbody);
+router.post('/sos',sosbody);
 
 export default router;
