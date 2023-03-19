@@ -5,21 +5,25 @@ import User from '../model/UserModel.js';
 import bcryptjs from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import twilio from 'twilio';
-import 'dotenv/config'
+import 'dotenv/config';
+import cookie from 'cookie-parser';
+
+
 
 
 const JWT_SECRET = 'nari2212';
 const unique = 'password';
 const {
     ACCOUNT_SID,AUTH_TOKEN,OTP_SERVICE_SID
-// eslint-disable-next-line no-undef
-} = process.env;
+  // eslint-disable-next-line no-undef
+  } = process.env;
 
 const client = new twilio(ACCOUNT_SID,AUTH_TOKEN,{
     lazyLoading:true,
-  }).varify;
+    }).varify;
 
-export const OTPAuth = async(req,res) =>{
+
+  export const OTPAuth = async(req,res) =>{
     // req => mobile number 
     // res => otp
 
@@ -48,25 +52,16 @@ export const logout = async(req,res) => {
     const{
         email
     } = req.body.email;
-    try {
-        const user = await User.findOne({ email });
-
-        // destroy() can't be read / undefined
-        req.session.destroy((err) =>{
-            if (err) {
-                console.log(err);
-                res.status(500).json({message:"Can't logout! Internal server error!!"});
-            }else{
-                res.status(200).json({message:"Logged out succesfully!"});
-            }
-        })   
-        if(!user){
-             res.json(400).json({message:"User not exist!"});
-             
-        }
-    } catch (err) {
+    
+    User.updateOne({ email }, {$set:{status: 'offline'}}, (err, result) => {
+      if(err) {
         console.log(err);
-    }
+        res.status(500).json({message:"Can't LogOut! Internal error!"});
+      }else{
+        res.status(200).json({message:"LogOut Succesfully!"});
+        res.cleaCookie('jwtToken');
+      }
+    })
     
 };
 
@@ -129,13 +124,16 @@ export const signup = async (req, res) => {
     const AuthToken = jwt.sign(data, JWT_SECRET);
   
     //  res.json(AuthToken);
+    res.cookie('jwtToken',AuthToken,{httpOnly:true});
   
     try {
       await user.save();
+      User.updateOne({email},{$set: {status:'online'}});
     } catch (err) {
       return console.log(err);
     }
     return res.status(201).json({message:"Sign up successfully!"});
+    
 };
 
 export const login = async (req, res, next) => {
@@ -170,6 +168,8 @@ export const login = async (req, res, next) => {
     // const isPasswordCoreect = bcryptjs.compareSync(password, unique);
     if (!isPasswordCoreect) {
       res.status(400).json({ message: 'Password is incorrect' });
+    }else{
+    res.status(200).json({ message:"login Succesfully!"});
+    User.updateOne({phonenumber},{$set: {status : 'online'}});
     }
-    return res.status(200).json({ message:"login Succesfully!"});
 };
