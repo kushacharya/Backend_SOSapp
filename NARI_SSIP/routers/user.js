@@ -14,6 +14,6 @@ router.post('/testing/:id', testing)
 
 // corecontroller
 router.post('/sos',sosbody);
-router.get('/sosHistory',getHistory);
+router.get('/sosHistory/:id',getHistory);
 
 export default router;
