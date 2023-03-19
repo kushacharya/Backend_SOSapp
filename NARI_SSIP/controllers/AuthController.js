@@ -20,10 +20,10 @@ const {
 
 const client = new twilio(ACCOUNT_SID,AUTH_TOKEN,{
     lazyLoading:true,
-    }).varify;
+    });
 
 
-  export const OTPAuth = async(req,res) =>{
+export const OTPAuth = async(req,res) =>{
     // req => mobile number 
     // res => otp
 
@@ -34,10 +34,10 @@ const client = new twilio(ACCOUNT_SID,AUTH_TOKEN,{
     try {
         
         //  Cannot read properties of undefined (reading 'services')
-    const otpResponse = await client.services(OTP_SERVICE_SID)
-    .varification.create({
-        to: "+919427437463",
-        channel : "sms"
+    const otpResponse = await client.verify.services(OTP_SERVICE_SID)
+    .verifications.create({
+        to: '+919427437463',
+        channel : 'sms'
     });
     res.status(200).json({message:"OTP send succesfully"});
         } catch (err) {
@@ -45,6 +45,26 @@ const client = new twilio(ACCOUNT_SID,AUTH_TOKEN,{
         res.status(err?.status || 400 ).json(err?.message || {message:"Something went wrong!!"});
     }
 };
+
+
+export const verifyOTP = async(req,res) => {
+  const {
+    phonenumber,otp
+  } = req.body;
+
+  try {
+    const verifyResponse = await client.verify.services(OTP_SERVICE_SID)
+    .verificationChecks.create({
+      to: `${phonenumber}`,
+      code: otp
+    });
+    res.status(200).json(`OTP verified Succesfuly!: ${JSON.stringify(verifyResponse)}`);
+  } catch (err) {
+    res.status(err?.status || 400).message(err?.message || 'Somthing went wrong!!');
+    console.log(err);
+  }
+}
+
 
 export const logout = async(req,res) => {
     //req => user.id

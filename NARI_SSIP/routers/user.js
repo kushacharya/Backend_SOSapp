@@ -1,7 +1,7 @@
 import express from 'express';
 import {getAllUser, getuser} from '../controllers/UserController.js';
 import { sosbody,getHistory } from "../controllers/CoreController.js";
-import {signup, login, logout, OTPAuth } from "../controllers/AuthController.js"
+import {signup, login, logout, OTPAuth, verifyOTP } from "../controllers/AuthController.js"
 const router = express.Router();
 
 //TODO exposing all users is a big privacy concern. Not required unless it has a significant business impact.
@@ -21,5 +21,6 @@ router.post('/signup', signup);
 router.post('/login', login);
 router.post('/logout',logout);
 router.post('/otp',OTPAuth);
+router.post('/verifyotp',verifyOTP);
 
 export default router;
