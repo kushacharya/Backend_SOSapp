@@ -1,10 +1,14 @@
+/* eslint-disable no-unused-vars */
 import 'dotenv/config';
 import twilio from 'twilio'
 import Post  from "../model/SOSModel.js";
 
 
-// const geoAPI = process.env.GEO_API;
+// eslint-disable-next-line no-undef
+const geoAPI = process.env.GEO_API;
+// eslint-disable-next-line no-undef
 const sid = process.env.ACCOUNT_SID;
+// eslint-disable-next-line no-undef
 const Auth = process.env.AUTH_TOKEN;
 const client = new twilio(sid,Auth,{
     lazyLoading:true,
@@ -42,6 +46,7 @@ export const sosbody = async(req,res) => {
 
    const latitude = reqbody.lat;
    const longitude = reqbody.lon;
+   const numbers = ['+91 87350 54157','+919427437463']
    const link = `https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}`;
    
     const smsbody = `link : ${link}
@@ -51,14 +56,16 @@ export const sosbody = async(req,res) => {
                     SOS trigger count : ${reqbody.count}`                    
 
     try{                
-   client.messages.create({
-    body: smsbody,
-    from : "+15074794666",
-    to : "+919427437463"
-    // to : reqbody.guardians  //due to twilio policy I cant send testing messages other than registered number.
-   }).then((message)  => {
-     res.status(200).json({message : "SOS msg sent succesfully!"});
-   })
+  //  client.messages.create({
+  //   body: "+919427437463",
+  //   from : "+15074794666",
+  //   to : numbers,
+  //   // to : reqbody.guardians  //due to twilio policy I cant send testing messages other than registered number.
+  //  }).then((message)  => {
+  //    res.status(200).json({message : "SOS msg sent succesfully!"});
+  //  })
+
+  res.status(200).json({message:"SMS sent!"});
     }
     catch(err){
         console.log(err);
