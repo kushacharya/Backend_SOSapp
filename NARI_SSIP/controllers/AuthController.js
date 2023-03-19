@@ -33,7 +33,6 @@ export const OTPAuth = async(req,res) =>{
 
     try {
         
-        //  Cannot read properties of undefined (reading 'services')
     const otpResponse = await client.verify.services(OTP_SERVICE_SID)
     .verifications.create({
         to: '+919427437463',
