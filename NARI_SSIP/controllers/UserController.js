@@ -17,7 +17,7 @@ const client = new twilio(sid,Auth,{
 
 const JWT_SECRET = 'nari2212';
 const unique = 'password';
-
+// for testing purpose
 // eslint-disable-next-line no-unused-vars
 export const getAllUser = async (req, res, next) => {
   //next will allow us to move available middlewear.
@@ -33,7 +33,7 @@ export const getAllUser = async (req, res, next) => {
   return res.status(200).json({ users });
 };
 
-
+// get user when we need to show user data in profile(done)
 export const getuser = async(req, res) =>{
   const userId = req.params.id;
   let userDetails;
@@ -49,7 +49,113 @@ export const getuser = async(req, res) =>{
   }
 }
 
+// export const upDateUser = async(req,res) => {
+//   const userId = req.params.id;
+//   const {
+//     name,
+//     email,
+//     phonenumber,
+//     phonenumber2,
+//     phonenumber3,
+//     phonenumber4,
+//     address,
+//     country,
+//     State,
+//     district,
+//     city,
+//     password,
+//     bloodgroup,
+//     dateofbirth,
+//     maritalstatus,
+//   } = req.body;
 
+//   let user = User.findOne({ userId })
+//   if (!user) {
+//     res.status(400).send({ message : "Bad request!" });
+//   }
+//  // res says user is updated by it is not updating in db.
+//   try {
+//   const userUpdate = User.updateOne({$set:{
+//     name : req.body,
+//     email : req.body,
+//     phonenumber : req.body,
+//     phonenumber2 : req.body,
+//     phonenumber3 : req.body,
+//     phonenumber4 : req.body,
+//     address : req.body,
+//     country : req.body,
+//     State : req.body,
+//     district : req.body,
+//     city : req.body,
+//     password : req.body,
+//     bloodgroup :req.body,
+//     dateofbirth : req.body,
+//     maritalstatus :req.body,
+//   } },req.params.id)
+
+//   res.status(200).json({ message: "User updated succesfully!!"});
+//              }
+//        catch (err) {
+//         res.status(500).send({message: "Server error!!"});
+//   console.log(err);
+//     }
+  
+// }
+
+export const upDateUser = async (req, res) => {
+  const userId = req.params.id;
+  const {
+    name,
+    // email,
+    phonenumber,
+    phonenumber2,
+    phonenumber3,
+    phonenumber4,
+    address,
+    country,
+    State,
+    district,
+    city,
+    password,
+    bloodgroup,
+    dateofbirth,
+    maritalstatus,
+  } = req.body;
+
+  let user = await User.findOne({ _id: userId });
+  if (!user) {
+    return res.status(400).send({ message: "Bad request!" });
+  }
+
+  try {
+    await User.updateOne({ _id: userId }, {
+      $set: {
+        name,
+        // email,
+        phonenumber,
+        phonenumber2,
+        phonenumber3,
+        phonenumber4,
+        address,
+        country,
+        State,
+        district,
+        city,
+        password,
+        bloodgroup,
+        dateofbirth,
+        maritalstatus,
+      }
+    });
+
+    res.status(200).json({ message: "User updated successfully!" });
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({ message: "Server error!" });
+  }
+};
+
+// for testing purpose
 export const sendSOS = async(req,res,next) => {
   // const {
   //   to,
@@ -65,7 +171,7 @@ export const sendSOS = async(req,res,next) => {
 
 }
 
-
+// for testing purpose
 export const testing = async(req,res, next) =>{
     const{link, id} =req.body;
     const UserId = req.params.id;

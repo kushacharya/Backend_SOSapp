@@ -16,11 +16,11 @@ const unique = 'password';
 const {
     ACCOUNT_SID,AUTH_TOKEN,OTP_SERVICE_SID
   // eslint-disable-next-line no-undef
-  } = process.env;
+} = process.env;
 
 const client = new twilio(ACCOUNT_SID,AUTH_TOKEN,{
     lazyLoading:true,
-    });
+});
 
 
 export const OTPAuth = async(req,res) =>{
@@ -33,7 +33,7 @@ export const OTPAuth = async(req,res) =>{
 
     try {
         
-    const otpResponse = await client.verify.services(OTP_SERVICE_SID)
+    const otpResponse = await client.verify.v2.services(OTP_SERVICE_SID)
     .verifications.create({
         to: '+919427437463',
         channel : 'sms'
@@ -52,14 +52,14 @@ export const verifyOTP = async(req,res) => {
   } = req.body;
 
   try {
-    const verifyResponse = await client.verify.services(OTP_SERVICE_SID)
+    const verifyResponse = await client.verify.v2.services(OTP_SERVICE_SID)
     .verificationChecks.create({
       to: `${phonenumber}`,
       code: otp
     });
     res.status(200).json(`OTP verified Succesfuly!: ${JSON.stringify(verifyResponse)}`);
   } catch (err) {
-    res.status(err?.status || 400).message(err?.message || 'Somthing went wrong!!');
+    res.status(err?.status || 400).send(err?.message || 'Somthing went wrong!!');
     console.log(err);
   }
 }
@@ -69,10 +69,10 @@ export const logout = async(req,res) => {
     //req => user.id
     //res => code
     const{
-        email
+        phonenumber
     } = req.body.email;
     
-    User.updateOne({ email }, {$set:{status: 'offline'}}, (err, result) => {
+    User.updateOne({ phonenumber }, {$set:{status: 'offline'}}, (err, result) => {
       if(err) {
         console.log(err);
         res.status(500).json({message:"Can't LogOut! Internal error!"});
@@ -87,7 +87,7 @@ export const logout = async(req,res) => {
 export const signup = async (req, res) => {
     const {
       name,
-      email,
+      // email,
       phonenumber,
       phonenumber2,
       phonenumber3,
@@ -118,7 +118,7 @@ export const signup = async (req, res) => {
     const hashedPassword = await bcryptjs.hashSync(unique, salt);
     const user = new User({
       name: req.body.name,
-      email: req.body.email,
+      // email: req.body.email,
       phonenumber: req.body.phonenumber,
       phonenumber2: req.body.phonenumber2,
       phonenumber3: req.body.phonenumber3,
@@ -147,7 +147,7 @@ export const signup = async (req, res) => {
   
     try {
       await user.save();
-      User.updateOne({email},{$set: {status:'online'}});
+      User.updateOne({phonenumber},{$set: {status:'online'}});
     } catch (err) {
       return console.log(err);
     }
@@ -155,6 +155,8 @@ export const signup = async (req, res) => {
     
 };
 
+
+// TODO: change the formate of login // by using only otp
 export const login = async (req, res, next) => {
     const { phonenumber, password } = req.body;
     let user;
@@ -175,7 +177,7 @@ export const login = async (req, res, next) => {
     if (!user) {
       return res
         .status(404)
-        .json({ message: "Couldn't find user with this email!" });
+        .json({ message: "Couldn't find user with this phonenumber!" });
     }
   
   

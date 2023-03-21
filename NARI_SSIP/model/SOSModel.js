@@ -28,6 +28,7 @@ const PostSchema = new mongoose.Schema({
 
    guardians:{
     type: Array,
+    phonenumber: []
    //  required: true
    },
 

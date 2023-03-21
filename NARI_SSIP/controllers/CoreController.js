@@ -73,11 +73,22 @@ export const sosbody = async(req,res) => {
     }
 }
 
+export const getallHst = async(req,res) => {
+  let hist;
+  try {
+    hist = await Post.find();
+  } catch (error) {
+    console.log(error);
+  }
+  res.status(200).json({ hist });
+}
+
 export const getHistory = async(req,res) => {
-  const userId = req.param.id;
+  const userId = req.params.id;
   let sosHistory;
   try {
     sosHistory = await Post.findById(userId);
+    console.log(sosHistory);
 
     const historyBody = `SOS triggered from: ${sosHistory.primary_mobile},
                          location link: https://www.google.com/maps/search/?api=1&query=${sosHistory.lat},${sosHistory.lon} ,

@@ -42,7 +42,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:3000/api/user//getuser/63f348bc6a3135d917d7f9be",
+					"raw": "http://localhost:3000/api/user//getuser/63f34aefd0cd79de06dab4a8",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -53,7 +53,7 @@
 						"user",
 						"",
 						"getuser",
-						"63f348bc6a3135d917d7f9be"
+						"63f34aefd0cd79de06dab4a8"
 					]
 				}
 			},
@@ -148,7 +148,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:3000/api/user/sosHistory/63f348bc6a3135d917d7f9be",
+					"raw": "http://localhost:3000/api/user/sosHistory/6416b071a961854c7a6ac7f8",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -158,7 +158,7 @@
 						"api",
 						"user",
 						"sosHistory",
-						"63f348bc6a3135d917d7f9be"
+						"6416b071a961854c7a6ac7f8"
 					]
 				}
 			},
@@ -231,7 +231,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"phonenumber\" : \"+919427437463\",\r\n    \"otp\":\"433298\"\r\n}",
+					"raw": "{\r\n    \"phonenumber\" : \"+919427437463\",\r\n    \"otp\":\"548078\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -249,6 +249,37 @@
 						"api",
 						"user",
 						"verifyotp"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:3000/api/user/updateuser/63f34aefd0cd79de06dab4a8",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"name\": \"UpdateKush\",\r\n        \"email\": \"1234@gmail.com\",\r\n        \"phonenumber\": 123456,\r\n        \"phonenumber2\": 123123,\r\n        \"phonenumber3\": 123987,\r\n        \"phonenumber4\": 123654,\r\n        \"address\": \"new address\",\r\n        \"country\": \"India\",\r\n        \"State\": \"Gujarat\",\r\n        \"district\": \"BK\",\r\n        \"city\": \"palanpur\",\r\n        \"password\": \"124567\",\r\n        \"bloodgroup\": \"O+\",\r\n        \"dateofbirth\": \"22112002\",\r\n        \"maritalstatus\": true\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/user/updateuser/63f34aefd0cd79de06dab4a8",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"user",
+						"updateuser",
+						"63f34aefd0cd79de06dab4a8"
 					]
 				}
 			},
