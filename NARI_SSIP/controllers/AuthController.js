@@ -7,6 +7,7 @@ import jwt from 'jsonwebtoken';
 import twilio from 'twilio';
 import 'dotenv/config';
 import cookie from 'cookie-parser';
+import { check, validationResult } from 'express-validator';
 
 
 
@@ -31,6 +32,13 @@ export const OTPAuth = async(req,res) =>{
         phonenumber
     } = req.body.phonenumber;
 
+    // validator check ✅
+    check('phonenumbe','Phone must be validate').isMobilePhone('en-IN')
+    const errors = validationResult(req);
+    if(!errors.isEmpty()){
+      return res.status(422).json({ errors : errors.array() });
+    }else{
+
     try {
         
     const otpResponse = await client.verify.v2.services(OTP_SERVICE_SID)
@@ -43,6 +51,8 @@ export const OTPAuth = async(req,res) =>{
         console.log(err);
         res.status(err?.status || 400 ).json(err?.message || {message:"Something went wrong!!"});
     }
+
+        }
 };
 
 
