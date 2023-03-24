@@ -84,18 +84,30 @@ export const getallHst = async(req,res) => {
 }
 
 export const getHistory = async(req,res) => {
-  const userId = req.params.id;
+  const {primary_mobile} = req.body;
   let sosHistory;
   try {
-    sosHistory = await Post.findById(userId);
+    sosHistory = await Post.find( {primary_mobile: primary_mobile});
     console.log(sosHistory);
 
-    const historyBody = `SOS triggered from: ${sosHistory.primary_mobile},
-                         location link: https://www.google.com/maps/search/?api=1&query=${sosHistory.lat},${sosHistory.lon} ,
-                         Time when SOS triggered ${sosHistory.time},
-                         SOS messages set to: ${sosHistory.guardians},
-                         Battery life: ${sosHistory.battery_life},
-                         Total count of SOS: ${sosHistory.count}`
+    // const historyBody = `SOS triggered from: ${sosHistory.primary_mobile},
+    //                      location link: https://www.google.com/maps/search/?api=1&query=${sosHistory.lat},${sosHistory.lon} ,
+    //                      Time when SOS triggered ${sosHistory.time},
+    //                      SOS messages set to: ${sosHistory.guardians},
+    //                      Battery life: ${sosHistory.battery_life},
+    //                      Total count of SOS: ${sosHistory.count}`
+
+
+    let historyBody = '';
+    for (let i = 0; i < sosHistory.length; i++) {
+      const historyItem = sosHistory[i];
+      historyBody += `SOS triggered from: ${historyItem.primary_mobile},
+                       location link: https://www.google.com/maps/search/?api=1&query=${historyItem.lat},${historyItem.lon} ,
+                       Time when SOS triggered ${historyItem.time},
+                       SOS messages set to: ${historyItem.guardians},
+                       Battery life: ${historyItem.battery_life},
+                       Total count of SOS: ${historyItem.count}\n`;
+    }
 
     res.status(200).json({historyBody});
   }

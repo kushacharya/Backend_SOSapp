@@ -18,7 +18,7 @@ router.put('/updateuser/:id', upDateUser);
 
 // corecontroller
 router.post('/sos',sosbody);
-router.get('/sosHistory/:id',getHistory);
+router.post('/sosHistory',getHistory);
 
 // AuthController
 router.post('/signup', signup);  //also in user control as i merged post req to signup (It will send all user data in server at the time of signup)

@@ -8,6 +8,7 @@ const PostSchema = new mongoose.Schema({
 
    primary_mobile:{
     type: String,
+    unique : true
    //  required: true
    },
 
