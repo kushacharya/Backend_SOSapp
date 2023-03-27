@@ -13,7 +13,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n     \"email\" : \"gaurav12345+6@gmail.com\",\r\n     \"password\" : \"password\"\r\n}",
+					"raw": "{\r\n     \"email\" : \"gaurav12345+9@gmail.com\",\r\n     \"password\" : \"password\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -98,7 +98,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"name\" : \"Gauravi\",\r\n    \"email\" : \"gaurav12345+7@gmail.com\",\r\n    \"phonenumber\" : \"123456\",\r\n    \"phonenumber2\" : \"123123\",\r\n    \"phonenumber3\" : \"123987\",\r\n    \"phonenumber4\" : \"123654\",\r\n    \"address\" : \"new address\",\r\n    \"country\" : \"India\",\r\n    \"State\" : \"Gujarat\",\r\n    \"district\" : \"BK\",\r\n    \"city\" : \"palanpur\",\r\n    \"password\" : \"123456\",\r\n    \"bloodgroup\" : \"O+\",\r\n    \"dateofbirth\": \"22112002\",\r\n    \"maritalstatus\" : true\r\n    }",
+					"raw": "{\r\n    \"name\" : \"Gauravi\",\r\n    \"email\" : \"gaurav12345+10@gmail.com\",\r\n    \"phonenumber\" : \"1234567\",\r\n    \"phonenumber2\" : \"123123\",\r\n    \"phonenumber3\" : \"123987\",\r\n    \"phonenumber4\" : \"123654\",\r\n    \"address\" : \"new address\",\r\n    \"country\" : \"India\",\r\n    \"State\" : \"Gujarat\",\r\n    \"district\" : \"BK\",\r\n    \"city\" : \"palanpur\",\r\n    \"password\" : \"123456\",\r\n    \"bloodgroup\" : \"O+\",\r\n    \"dateofbirth\": \"22112002\",\r\n    \"maritalstatus\" : true\r\n    }",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -126,6 +126,15 @@
 			"request": {
 				"method": "POST",
 				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"user_id\" : \"63f348bc6a3135d917d7f9be\",\r\n    \"primary_mobile\" : \"123456789\",\r\n    \"lat\" : \"demolat111\",\r\n    \"lon\" : \"demolon222\",\r\n    \"time\" : \"demoTime\",\r\n    \"guardians\" : [\"11111\",\"22222\",\"33333\"],\r\n    \"battery_life\" : \"demoBatterylife\",\r\n    \"count\" : \"count\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
 				"url": {
 					"raw": "http://localhost:3000/api/user/sos",
 					"protocol": "http",
@@ -145,10 +154,19 @@
 		{
 			"name": "http://localhost:3000/api/user/sosHistory/63f348bc6a3135d917d7f9be",
 			"request": {
-				"method": "GET",
+				"method": "POST",
 				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"primary_mobile\" : \"123456789\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
 				"url": {
-					"raw": "http://localhost:3000/api/user/sosHistory/6416b071a961854c7a6ac7f8",
+					"raw": "http://localhost:3000/api/user/sosHistory",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -157,8 +175,7 @@
 					"path": [
 						"api",
 						"user",
-						"sosHistory",
-						"6416b071a961854c7a6ac7f8"
+						"sosHistory"
 					]
 				}
 			},
@@ -201,7 +218,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"phonenumber\" : \"+919427437463\"\r\n}",
+					"raw": "{\r\n    \"phonenumber\" : \"+91942743746\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
