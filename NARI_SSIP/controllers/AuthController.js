@@ -7,7 +7,7 @@ import jwt from 'jsonwebtoken';
 import twilio from 'twilio';
 import 'dotenv/config';
 import cookie from 'cookie-parser';
-import { check, validationResult } from 'express-validator';
+import { body,check, validationResult } from 'express-validator';
 
 
 
@@ -25,38 +25,59 @@ const client = new twilio(ACCOUNT_SID,AUTH_TOKEN,{
 
 
 export const OTPAuth = async(req,res) =>{
+
+  const PhoneValidationRules = [
+    body('phonenumber').isMobilePhone('en-IN').withMessage('Inavalid Phone-number')
+  ];
+
+  await Promise.all(PhoneValidationRules.map(validation => validation.run(req)))
+
     // req => mobile number 
     // res => otp
 
-    const {
-        phonenumber
-    } = req.body.phonenumber;
-
-    // validator check ✅
-    check('phonenumbe','Phone must be validate').isMobilePhone('en-IN')
     const errors = validationResult(req);
-    if(!errors.isEmpty()){
-      return res.status(422).json({ errors : errors.array() });
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ errors: errors.array() });
+    }else{
+    const phonenumber = req.body.phonenumber;
+
+    // validator check 
+    // check('phonenumber','Phone must be validate').isMobilePhone('en-IN')
+    
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ errors: errors.array() });
     }else{
 
-    try {
-        
-    const otpResponse = await client.verify.v2.services(OTP_SERVICE_SID)
-    .verifications.create({
-        to: '+919427437463',
-        channel : 'sms'
-    });
-    res.status(200).json({message:"OTP send succesfully"});
+        try {
+              const otpResponse = await client.verify.v2.services(OTP_SERVICE_SID)
+              .verifications.create({
+                  to: `${phonenumber}`,
+                  channel : 'sms'
+              });
+              res.status(200).json({message:"OTP send succesfully"});
         } catch (err) {
         console.log(err);
         res.status(err?.status || 400 ).json(err?.message || {message:"Something went wrong!!"});
+      }
     }
-
-        }
+  }
 };
 
 
 export const verifyOTP = async(req,res) => {
+
+  const PhoneValidationRules = [
+    body('phonenumber').isMobilePhone('en-IN').withMessage('Inavalid Phone-number')
+  ];
+
+  const OTPValidationRules = [
+    body('otp').isNumeric().withMessage('OTP field is empty').isLength({ min: 6, max: 6 }).withMessage('Invalid length!!')
+  ]
+
+  await Promise.all(PhoneValidationRules.map(validation => validation.run(req)))
+  await Promise.all(OTPValidationRules.map(validation => validation.run(req)))
+
   const {
     phonenumber,otp
   } = req.body;
@@ -76,12 +97,24 @@ export const verifyOTP = async(req,res) => {
 
 
 export const logout = async(req,res) => {
+
+    const PhoneValidationRules = [
+      body('phonenumber').isMobilePhone('en-IN').withMessage('Invalid Phone number for logout')
+    ];
+
+    await Promise.all(PhoneValidationRules.map(validation => validation(req)))
+
     //req => user.id
     //res => code
-    const{
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ errors : errors.array() });
+    }else{
+      const{
         phonenumber
     } = req.body.email;
-    
+
     User.updateOne({ phonenumber }, {$set:{status: 'offline'}}, (err, result) => {
       if(err) {
         console.log(err);
@@ -89,11 +122,13 @@ export const logout = async(req,res) => {
       }else{
         res.status(200).json({message:"LogOut Succesfully!"});
         res.cleaCookie('jwtToken');
-      }
-    })
+        }
+     })
+    }
     
 };
 
+// will do validation after concern of @ashivyas
 export const signup = async (req, res) => {
     const {
       name,
@@ -167,6 +202,7 @@ export const signup = async (req, res) => {
 
 
 // TODO: change the formate of login // by using only otp
+// Already done with OTP validation endpoints but it is here for plan B==> @ashivyas
 export const login = async (req, res, next) => {
     const { phonenumber, password } = req.body;
     let user;
