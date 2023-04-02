@@ -46,17 +46,12 @@ const userSchema = new Schema({
     type: String,
     required: true
   },
-  password:{
-    type: String,
-    required: true,
-    minlenght: 6
-  },
   bloodgroup:{
     type: String,
     required: true
   },
   dateofbirth:{
-    type: String,
+    type: Date,
     required: true
   },
   maritalstatus:{

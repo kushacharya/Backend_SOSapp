@@ -5,6 +5,8 @@ import User from '../model/UserModel.js';
 import bcryptjs from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import twilio from 'twilio';
+import { validationResult } from "express-validator";
+import {SignUpValidator} from './utils/Validators.js'
 
 
 // eslint-disable-next-line no-undef
@@ -103,6 +105,14 @@ export const getuser = async(req, res) =>{
 // }
 
 export const upDateUser = async (req, res) => {
+
+  await Promise.all(SignUpValidator.validation.map(validation => validation.run(req)))
+  const errors = validationResult(req)
+
+  if (!errors.isEmpty()) {
+    return res.status(422).json({errors : errors.array()});
+  }else{
+
   const userId = req.params.id;
   const {
     name,
@@ -116,7 +126,6 @@ export const upDateUser = async (req, res) => {
     State,
     district,
     city,
-    password,
     bloodgroup,
     dateofbirth,
     maritalstatus,
@@ -141,7 +150,6 @@ export const upDateUser = async (req, res) => {
         State,
         district,
         city,
-        password,
         bloodgroup,
         dateofbirth,
         maritalstatus,
@@ -152,10 +160,12 @@ export const upDateUser = async (req, res) => {
   } catch (err) {
     console.log(err);
     res.status(500).send({ message: "Server error!" });
+   }
   }
 };
 
 // for testing purpose
+// no need of validator
 export const sendSOS = async(req,res,next) => {
   // const {
   //   to,

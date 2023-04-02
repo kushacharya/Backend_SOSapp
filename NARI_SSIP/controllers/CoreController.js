@@ -2,6 +2,8 @@
 import 'dotenv/config';
 import twilio from 'twilio'
 import Post  from "../model/SOSModel.js";
+import { validationResult } from 'express-validator';
+import { SOSvalidator } from './utils/Validators.js'
 
 
 // eslint-disable-next-line no-undef
@@ -15,6 +17,15 @@ const client = new twilio(sid,Auth,{
   });
 
 export const sosbody = async(req,res) => {
+
+  // validaion in sos body req??
+  await Promise.all(SOSvalidator.map(validation => validation.run(req)))
+  const errors = validationResult(req)
+
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ errors : errors.array() });
+  }else{
+
     const reqbody = {
         user_id : req.body.user_id,
         primary_mobile : req.body.primary_mobile,
@@ -71,6 +82,7 @@ export const sosbody = async(req,res) => {
         console.log(err);
         res.status(500).json({message : "Can't send message"});
     }
+  } 
 }
 
 export const getallHst = async(req,res) => {

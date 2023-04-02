@@ -8,6 +8,7 @@ import twilio from 'twilio';
 import 'dotenv/config';
 import cookie from 'cookie-parser';
 import { body,check, validationResult } from 'express-validator';
+import { PhoneValidatorRules, OTPValidationRules,SignUpValidator } from './utils/Validators.js'
 
 
 
@@ -26,11 +27,7 @@ const client = new twilio(ACCOUNT_SID,AUTH_TOKEN,{
 
 export const OTPAuth = async(req,res) =>{
 
-  const PhoneValidationRules = [
-    body('phonenumber').isMobilePhone('en-IN').withMessage('Inavalid Phone-number')
-  ];
-
-  await Promise.all(PhoneValidationRules.map(validation => validation.run(req)))
+  await Promise.all(PhoneValidatorRules.map(validation => validation.run(req)))
 
     // req => mobile number 
     // res => otp
@@ -67,15 +64,7 @@ export const OTPAuth = async(req,res) =>{
 
 export const verifyOTP = async(req,res) => {
 
-  const PhoneValidationRules = [
-    body('phonenumber').isMobilePhone('en-IN').withMessage('Inavalid Phone-number')
-  ];
-
-  const OTPValidationRules = [
-    body('otp').isNumeric().withMessage('OTP field is empty').isLength({ min: 6, max: 6 }).withMessage('Invalid length!!')
-  ]
-
-  await Promise.all(PhoneValidationRules.map(validation => validation.run(req)))
+  await Promise.all(PhoneValidatorRules.map(validation => validation.run(req)))
   await Promise.all(OTPValidationRules.map(validation => validation.run(req)))
 
   const {
@@ -96,13 +85,9 @@ export const verifyOTP = async(req,res) => {
 }
 
 
-export const logout = async(req,res) => {
+export const logout = async( PhoneValidatorRules ,req,res) => {
 
-    const PhoneValidationRules = [
-      body('phonenumber').isMobilePhone('en-IN').withMessage('Invalid Phone number for logout')
-    ];
-
-    await Promise.all(PhoneValidationRules.map(validation => validation(req)))
+    await Promise.all(PhoneValidatorRules.map(validation => validation.run(req)))
 
     //req => user.id
     //res => code
@@ -130,6 +115,14 @@ export const logout = async(req,res) => {
 
 // will do validation after concern of @ashivyas
 export const signup = async (req, res) => {
+
+  await Promise.all(SignUpValidator.map(validation => validation.run(req)))
+  const errors = validationResult(req)
+
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ errors : errors.array() });
+  }else{
+  
     const {
       name,
       // email,
@@ -142,7 +135,6 @@ export const signup = async (req, res) => {
       State,
       district,
       city,
-      password,
       bloodgroup,
       dateofbirth,
       maritalstatus,
@@ -197,7 +189,7 @@ export const signup = async (req, res) => {
       return console.log(err);
     }
     return res.status(201).json({message:"Sign up successfully!"});
-    
+  }
 };
 
 
