@@ -14,14 +14,10 @@ const userSchema = new Schema({
     type : Number,
     required: true,
   },
-  phonenumber2:{
-    type: Number,
-    required: true,
-  },
-  phonenumber3:{
-    type: Number,
-    required : true,
-  },
+ guardians:{
+    type: Array,
+    phonenumbers: [],
+ },
   phonenumber4:{
     type: Number,
     required: true
