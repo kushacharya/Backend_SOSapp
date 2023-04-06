@@ -77,7 +77,13 @@ export const verifyOTP = async(req,res) => {
       to: `${phonenumber}`,
       code: otp
     });
-    res.status(200).json(`OTP verified Succesfuly!: ${JSON.stringify(verifyResponse)}`);
+
+    if (verifyResponse.status === 'approved') {
+      res.status(200).json({otpVerified: true, message: 'OTP verified succesfully!'});
+    }else{
+      res.status(200).json({otpVerified: false, message: 'Wrong OTP!'});
+    }
+    // res.status(200).json(`OTP verified Succesfuly!: ${JSON.stringify(verifyResponse)}`);
   } catch (err) {
     res.status(err?.status || 400).send(err?.message || 'Somthing went wrong!!');
     console.log(err);
