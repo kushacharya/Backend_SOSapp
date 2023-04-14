@@ -18,10 +18,6 @@ const userSchema = new Schema({
     type: Array,
     phonenumbers: [],
  },
-  phonenumber4:{
-    type: Number,
-    required: true
-  },
   address:{
     type: String,
     required: true

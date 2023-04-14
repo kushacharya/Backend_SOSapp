@@ -98,7 +98,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"name\" : \"Gauravi\",\r\n    \"email\" : \"gaurav12345+10@gmail.com\",\r\n    \"phonenumber\" : \"1234567\",\r\n    \"phonenumber2\" : \"123123\",\r\n    \"phonenumber3\" : \"123987\",\r\n    \"phonenumber4\" : \"123654\",\r\n    \"address\" : \"new address\",\r\n    \"country\" : \"India\",\r\n    \"State\" : \"Gujarat\",\r\n    \"district\" : \"BK\",\r\n    \"city\" : \"palanpur\",\r\n    \"password\" : \"123456\",\r\n    \"bloodgroup\" : \"O+\",\r\n    \"dateofbirth\": \"22112002\",\r\n    \"maritalstatus\" : true\r\n    }",
+					"raw": "{\r\n    \"name\" : \"Gauravi\",\r\n    \"email\" : \"gaurav12345+10@gmail.com\",\r\n    \"phonenumber\" : \"+919427437463\",\r\n    \"phonenumber2\" : \"+919427437463\",\r\n    \"phonenumber3\" : \"+919427437463\",\r\n    \"phonenumber4\" : \"+919427437463\",\r\n    \"address\" : \"new address\",\r\n    \"country\" : \"India\",\r\n    \"State\" : \"Gujarat\",\r\n    \"district\" : \"BK\",\r\n    \"city\" : \"palanpur\",\r\n    \"password\" : \"123456\",\r\n    \"bloodgroup\" : \"O+\",\r\n    \"dateofbirth\": \"22112002\",\r\n    \"maritalstatus\" : true\r\n    }",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -188,7 +188,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"id\" : \"6416d31a06fb4e1bae6bf5cb\"\r\n}",
+					"raw": "{\r\n    \"phonenumber\" : \"+919427437463\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -206,6 +206,37 @@
 						"api",
 						"user",
 						"logout"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:3000/api/user/updateuser/63f34aefd0cd79de06dab4a8",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"name\": \"UpdateKush\",\r\n        \"email\": \"1234@gmail.com\",\r\n        \"phonenumber\": 123456,\r\n        \"phonenumber2\": 123123,\r\n        \"phonenumber3\": 123987,\r\n        \"phonenumber4\": 123654,\r\n        \"address\": \"new address\",\r\n        \"country\": \"India\",\r\n        \"State\": \"Gujarat\",\r\n        \"district\": \"BK\",\r\n        \"city\": \"palanpur\",\r\n        \"password\": \"124567\",\r\n        \"bloodgroup\": \"O+\",\r\n        \"dateofbirth\": \"22112002\",\r\n        \"maritalstatus\": true\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/user/updateuser/63f34aefd0cd79de06dab4a8",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"user",
+						"updateuser",
+						"63f34aefd0cd79de06dab4a8"
 					]
 				}
 			},
@@ -248,7 +279,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"phonenumber\" : \"+919427437463\",\r\n    \"otp\":\"548078\"\r\n}",
+					"raw": "{\r\n    \"phonenumber\" : \"+919427437463\",\r\n    \"Code\" : \"623854\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -266,37 +297,6 @@
 						"api",
 						"user",
 						"verifyotp"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "http://localhost:3000/api/user/updateuser/63f34aefd0cd79de06dab4a8",
-			"request": {
-				"method": "PUT",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n        \"name\": \"UpdateKush\",\r\n        \"email\": \"1234@gmail.com\",\r\n        \"phonenumber\": 123456,\r\n        \"phonenumber2\": 123123,\r\n        \"phonenumber3\": 123987,\r\n        \"phonenumber4\": 123654,\r\n        \"address\": \"new address\",\r\n        \"country\": \"India\",\r\n        \"State\": \"Gujarat\",\r\n        \"district\": \"BK\",\r\n        \"city\": \"palanpur\",\r\n        \"password\": \"124567\",\r\n        \"bloodgroup\": \"O+\",\r\n        \"dateofbirth\": \"22112002\",\r\n        \"maritalstatus\": true\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:3000/api/user/updateuser/63f34aefd0cd79de06dab4a8",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"api",
-						"user",
-						"updateuser",
-						"63f34aefd0cd79de06dab4a8"
 					]
 				}
 			},

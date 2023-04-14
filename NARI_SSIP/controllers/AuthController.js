@@ -46,6 +46,13 @@ export const OTPAuth = async(req,res) =>{
       return res.status(422).json({ errors: errors.array() });
     }else{
 
+       //404 not found
+    let user;
+    user = await User.findOne({ phonenumber })
+    if (!user) {
+      res.status(404).json({message : 'User not found! try login instead'});
+    }else{
+
         try {
               const otpResponse = await client.verify.v2.services(OTP_SERVICE_SID)
               .verifications.create({
@@ -56,6 +63,7 @@ export const OTPAuth = async(req,res) =>{
         } catch (err) {
         console.log(err);
         res.status(err?.status || 400 ).json(err?.message || {message:"Something went wrong!!"});
+        }
       }
     }
   }
@@ -68,18 +76,24 @@ export const verifyOTP = async(req,res) => {
   await Promise.all(OTPValidationRules.map(validation => validation.run(req)))
 
   const {
-    phonenumber,otp
+    phonenumber,Code
   } = req.body;
+
+  //404 not found
+  
 
   try {
     const verifyResponse = await client.verify.v2.services(OTP_SERVICE_SID)
     .verificationChecks.create({
       to: `${phonenumber}`,
-      code: otp
+      code: `${Code}`
     });
 
     if (verifyResponse.status === 'approved') {
-      res.status(200).json({otpVerified: true, message: 'OTP verified succesfully!'});
+      const UserStatus = 'online'
+      // res
+      res.status(200).cookie('userStatus' ,UserStatus).json({otpVerified: true, message: 'OTP verified succesfully!', UserStatus});
+      
     }else{
       res.status(200).json({otpVerified: false, message: 'Wrong OTP!'});
     }
@@ -91,9 +105,11 @@ export const verifyOTP = async(req,res) => {
 }
 
 
-export const logout = async( PhoneValidatorRules ,req,res) => {
+export const logout = async( req,res) => {
 
-    await Promise.all(PhoneValidatorRules.map(validation => validation.run(req)))
+  // 404 data not found
+
+  await Promise.all(PhoneValidatorRules.map(validation => validation.run(req)))
 
     //req => user.id
     //res => code
@@ -104,15 +120,18 @@ export const logout = async( PhoneValidatorRules ,req,res) => {
     }else{
       const{
         phonenumber
-    } = req.body.email;
+    } = req.body.phonenumber;
 
     User.updateOne({ phonenumber }, {$set:{status: 'offline'}}, (err, result) => {
       if(err) {
         console.log(err);
         res.status(500).json({message:"Can't LogOut! Internal error!"});
       }else{
-        res.status(200).json({message:"LogOut Succesfully!"});
-        res.cleaCookie('jwtToken');
+        const UserStatus = 'offline'
+
+        res.status(200).cookie('userStatus', UserStatus).json({message:"LogOut Succesfully!", UserStatus});
+        // res.clearCookie('jwtToken');
+        
         }
      })
     }
@@ -186,7 +205,6 @@ export const signup = async (req, res) => {
   
     try {
       await user.save();
-      User.updateOne({phonenumber},{$set: {status:'online'}});
     } catch (err) {
       return console.log(err);
     }
