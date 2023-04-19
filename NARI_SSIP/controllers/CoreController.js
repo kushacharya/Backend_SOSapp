@@ -64,7 +64,8 @@ export const sosbody = async(req,res) => {
                     User mobile number : ${reqbody.primary_mobile}
                     SOS trigger time : ${reqbody.time}
                     battery life of mobile : ${reqbody.battery_life}
-                    SOS trigger count : ${reqbody.count}`                    
+                    SOS trigger count : ${reqbody.count}
+                    mobile-numbers of guardians : ${reqbody.guardians}`                    
 
     try{                
   //  client.messages.create({

@@ -10,6 +10,10 @@ const userSchema = new Schema({
     required: true
 
   },
+  gender:{
+    type:String,
+    required:true
+  },
   phonenumber: {
     type : Number,
     required: true,
@@ -34,20 +38,20 @@ const userSchema = new Schema({
     type: String,
     required: true
   },
-  city:{
-    type: String,
-    required: true
-  },
   bloodgroup:{
     type: String,
     required: true
   },
   dateofbirth:{
-    type: Date,
+    type: String,
     required: true
   },
   maritalstatus:{
-    type:Boolean,
+    type:String,
+    required: true
+  },
+  ImageString:{
+    type:String,
     required: true
   }
 })

@@ -37,6 +37,7 @@ export const OTPAuth = async(req,res) =>{
       return res.status(422).json({ errors: errors.array() });
     }else{
     const phonenumber = req.body.phonenumber;
+    const checkString = req.body.checkString; // checkString will be set for new user.
 
     // validator check 
     // check('phonenumber','Phone must be validate').isMobilePhone('en-IN')
@@ -49,9 +50,13 @@ export const OTPAuth = async(req,res) =>{
        //404 not found
     let user;
     user = await User.findOne({ phonenumber })
-    if (!user) {
+    if (checkString != "new" && !user) {  
       res.status(404).json({message : 'User not found! try login instead'});
-    }else{
+    }else
+    if (checkString == "new" && user) {
+      res.status(403).json({ message: 'User already available! login Instead!!'});
+    }
+    else{
 
         try {
               const otpResponse = await client.verify.v2.services(OTP_SERVICE_SID)
@@ -150,17 +155,17 @@ export const signup = async (req, res) => {
   
     const {
       name,
-      // email,
-      phonenumber,
-      guardians,
-      address,
+      gender,
+      maritalstatus,
+      dateofbirth,
       country,
       State,
       district,
-      city,
+      address,
       bloodgroup,
-      dateofbirth,
-      maritalstatus,
+      ImageString,
+      guardians,
+      phonenumber
     } = req.body;
   
     let existUser;
@@ -178,18 +183,17 @@ export const signup = async (req, res) => {
     const hashedPassword = await bcryptjs.hashSync(unique, salt);
     const user = new User({
       name: req.body.name,
-      // email: req.body.email,
       phonenumber: req.body.phonenumber,
       guardians: req.body.guardians,
       address: req.body.address,
       country: req.body.country,
       State: req.body.State,
       district: req.body.district,
-      city: req.body.city,
-      password: hashedPassword,
       bloodgroup: req.body.bloodgroup,
       dateofbirth: req.body.dateofbirth,
       maritalstatus: req.body.maritalstatus,
+      gender: req.body.gender,
+      ImageString: req.body.ImageString
     });
   
     const data = {
