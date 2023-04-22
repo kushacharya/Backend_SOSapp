@@ -13,7 +13,7 @@ router.get('/',getAllUser);
 // router.post('/testing/:id', testing)  // No use for now
 
 // USERcontroller
-router.get('/getuser/:id', getuser);
+router.post('/getuser', getuser);
 router.put('/updateuser/:id', upDateUser);
 
 // corecontroller

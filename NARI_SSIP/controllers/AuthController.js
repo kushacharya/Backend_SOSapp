@@ -81,7 +81,7 @@ export const verifyOTP = async(req,res) => {
   await Promise.all(OTPValidationRules.map(validation => validation.run(req)))
 
   const {
-    phonenumber,Code
+    phonenumber,code
   } = req.body;
 
   //404 not found
@@ -91,7 +91,7 @@ export const verifyOTP = async(req,res) => {
     const verifyResponse = await client.verify.v2.services(OTP_SERVICE_SID)
     .verificationChecks.create({
       to: `${phonenumber}`,
-      code: `${Code}`
+      code: `${code}`
     });
 
     if (verifyResponse.status === 'approved') {
@@ -157,11 +157,9 @@ export const signup = async (req, res) => {
       name,
       gender,
       maritalstatus,
-      dateofbirth,
       country,
       State,
       district,
-      address,
       bloodgroup,
       ImageString,
       guardians,
@@ -185,12 +183,10 @@ export const signup = async (req, res) => {
       name: req.body.name,
       phonenumber: req.body.phonenumber,
       guardians: req.body.guardians,
-      address: req.body.address,
       country: req.body.country,
       State: req.body.State,
       district: req.body.district,
       bloodgroup: req.body.bloodgroup,
-      dateofbirth: req.body.dateofbirth,
       maritalstatus: req.body.maritalstatus,
       gender: req.body.gender,
       ImageString: req.body.ImageString
@@ -206,13 +202,13 @@ export const signup = async (req, res) => {
   
     //  res.json(AuthToken);
     res.cookie('jwtToken',AuthToken,{httpOnly:true});
-  
-    try {
+      try {
       await user.save();
     } catch (err) {
       return console.log(err);
     }
-    return res.status(201).json({message:"Sign up successfully!"});
+    const UserStatus = "online"
+    return res.status(201).cookie('userStatus' ,UserStatus).json({message:"Sign up successfully!"});
   }
 };
 

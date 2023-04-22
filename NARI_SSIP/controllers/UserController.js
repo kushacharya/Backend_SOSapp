@@ -37,11 +37,11 @@ export const getAllUser = async (req, res, next) => {
 
 // get user when we need to show user data in profile(done)
 export const getuser = async(req, res) =>{
-  const userId = req.params.id;
+  const phonenumber = req.body.userNumber
   let userDetails;
   try {
-    userDetails = await User.findById(userId);
-    res.status(200).json({userDetails});
+    userDetails = await User.findOne({phonenumber});
+    res.status(200).send({ userDetails });
   } catch (err) {
     console.log(err);
   }

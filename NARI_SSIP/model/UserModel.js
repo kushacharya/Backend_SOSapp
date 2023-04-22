@@ -22,10 +22,6 @@ const userSchema = new Schema({
     type: Array,
     phonenumbers: [],
  },
-  address:{
-    type: String,
-    required: true
-  },
   country:{
     type: String,
     required: true
@@ -42,17 +38,13 @@ const userSchema = new Schema({
     type: String,
     required: true
   },
-  dateofbirth:{
-    type: String,
-    required: true
-  },
   maritalstatus:{
     type:String,
     required: true
   },
   ImageString:{
     type:String,
-    required: true
+    required: false
   }
 })
 

@@ -16,13 +16,10 @@ export const SignUpValidator = [
     body('phonenumber2').optional({ nullable: false }).isMobilePhone('en-IN').withMessage('Invalid phone number'),
     body('phonenumber3').optional({ nullable: true }).isMobilePhone('en-IN').withMessage('Invalid phone number'),
     body('phonenumber4').optional({ nullable: true }).isMobilePhone('en-IN').withMessage('Invalid phone number'),
-    body('address').not().isEmpty().withMessage('Address is required'),
     body('country').not().isEmpty().withMessage('Country is required'),
     body('State').not().isEmpty().withMessage('State is required'),
     body('district').not().isEmpty().withMessage('District is required'),
-    body('city').not().isEmpty().withMessage('City is required'),
     body('bloodgroup').not().isEmpty().withMessage('Blood group is required'),
-    body('dateofbirth').not().isEmpty().withMessage('Date of birth is required'),
     body('maritalstatus').not().isEmpty().withMessage('Marital status is required')
 ]
 

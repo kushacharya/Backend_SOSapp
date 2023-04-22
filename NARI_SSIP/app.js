@@ -8,7 +8,7 @@ const PORT = process.env.PORT || 3000;
 const MONGODB = process.env.MONGODB;
 
 const app = express();
-app.use(express.json());
+app.use(express.json({limit: '75mb'}));
 app.use('/api/user', router);
 
 mongoose.set('strictQuery', false);
