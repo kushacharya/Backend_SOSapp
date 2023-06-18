@@ -27,8 +27,9 @@ export const sosbody = async(req,res) => {
   }else{
 
     const reqbody = {
-        user_id : req.body.user_id,
+        // user_id : req.body.user_id,
         primary_mobile : req.body.primary_mobile,
+        name : req.body.name,
         lat : req.body.lat,
         lon : req.body.lon,
         time : req.body.time,
@@ -38,7 +39,8 @@ export const sosbody = async(req,res) => {
     }
 
     const sosTrig = new Post({
-      user_id : req.body.user_id,
+      // user_id : req.body.user_id,
+      name : req.body.name,
       primary_mobile : req.body.primary_mobile,
       lat : req.body.lat,
       lon : req.body.lon,
@@ -61,6 +63,7 @@ export const sosbody = async(req,res) => {
    const link = `https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}`;
    
     const smsbody = `link : ${link}
+                    SOS triggered by : ${reqbody.name}
                     User mobile number : ${reqbody.primary_mobile}
                     SOS trigger time : ${reqbody.time}
                     battery life of mobile : ${reqbody.battery_life}

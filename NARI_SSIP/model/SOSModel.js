@@ -12,6 +12,11 @@ const PostSchema = new mongoose.Schema({
    //  required: true
    },
 
+   name:{
+      type: String,
+   
+   },
+
    lat:{
     type: String,
    //  required: true

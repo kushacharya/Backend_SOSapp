@@ -51,7 +51,7 @@ export const OTPAuth = async(req,res) =>{
     let user;
     user = await User.findOne({ phonenumber })
     if (checkString != "new" && !user) {  
-      res.status(203).json({message : 'User not found! try login instead'});
+      res.status(203).json({message : 'User not found! try SignUp instead'});
     }else
     if (checkString == "new" && user) {
       res.status(403).json({ message: 'User already available! login Instead!!'});
