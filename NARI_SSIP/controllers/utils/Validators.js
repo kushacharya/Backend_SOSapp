@@ -24,15 +24,15 @@ export const SignUpValidator = [
 ]
 
 export const SOSvalidator = [
-    body('user_id').not().isEmpty().withMessage('User ID is required!'),
+    // body('user_id').not().isEmpty().withMessage('User ID is required!'),
     body('primary_mobile').isMobilePhone('en-IN').withMessage('Invalid Phone number'),
     body('lat').not().isEmpty().withMessage('lat is required!'),
     body('lon').not().isEmpty().withMessage('lon is required!'),
     body('time').not().isEmpty().withMessage('Time is required'),
-    body('phoneNumberArray').isArray().withMessage('Phone number array is required') // used internet help for array of phone number.
+    body('guardians').isArray().withMessage('Phone number array is required') // used internet help for array of phone number.
     // eslint-disable-next-line no-unused-vars
-    .custom((phoneNumberArray, { req }) => {
-      phoneNumberArray.forEach((phoneNumber, index) => {
+    .custom((guardians, { req }) => {
+      guardians.forEach((phoneNumber, index) => {
         if (!validator.isMobilePhone(phoneNumber, 'en-IN')) {
           throw new Error(`Invalid phone number at index ${index}`);
         }

@@ -27,6 +27,7 @@ export const sosbody = async(req,res) => {
   }else{
 
     const reqbody = {
+        checkString : req.body.checkString,
         // user_id : req.body.user_id,
         primary_mobile : req.body.primary_mobile,
         name : req.body.name,
@@ -38,6 +39,7 @@ export const sosbody = async(req,res) => {
         count : req.body.count
     }
 
+    //It will save User's SOS history
     const sosTrig = new Post({
       // user_id : req.body.user_id,
       name : req.body.name,
@@ -52,15 +54,19 @@ export const sosbody = async(req,res) => {
 
     try {
       await sosTrig.save();
+      console.log("saved in db");
       } catch (err) {
       console.log(err);
     }
     // res.json({message: "SOS message saved in history"});  //optional: no need to send json
+    if (reqbody.checkString == "sms") { 
+      
+    
 
    const latitude = reqbody.lat;
    const longitude = reqbody.lon;
    const numbers = ['+91 87350 54157','+919427437463']
-   const link = `https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}`;
+   const link = `http://localhost:3000/api/user/dynamiclink`;
    
     const smsbody = `link : ${link}
                     SOS triggered by : ${reqbody.name}
@@ -70,23 +76,46 @@ export const sosbody = async(req,res) => {
                     SOS trigger count : ${reqbody.count}
                     mobile-numbers of guardians : ${reqbody.guardians}`                    
 
-    try{                
-  //  client.messages.create({
-  //   body: "+919427437463",
-  //   from : "+15074794666",
-  //   to : numbers,
-  //   // to : reqbody.guardians  //due to twilio policy I cant send testing messages other than registered number.
-  //  }).then((message)  => {
-  //    res.status(200).json({message : "SOS msg sent succesfully!"});
-  //  })
+                    console.log(smsbody);
+    try{       
+      
+      // will uncomment when I have api
+   client.messages.create({
+    body: "+919427437463",
+    from : "+15074794666",
+    to : '919427437463',
+    // to : reqbody.guardians  //due to twilio policy I cant send testing messages other than registered number.
+   }).then((message)  => {
+     res.status(200).json({message : "SOS msg sent succesfully!"});
+   })
+  console.log(smsbody);
 
-  res.status(200).json({message:"SMS sent!"});
+  // res.status(200).json({message:"SMS sent!"});
     }
     catch(err){
         console.log(err);
         res.status(500).json({message : "Can't send message"});
+     }
     }
+  if (reqbody.checkString == "update") {
+    // will update the dynamic link!
+  }
+  if (reqbody.checkString == "safe") {
+    //terminate the timer in frontend and end the sos location updation process
+    
+  }
   } 
+}
+
+export const dynamiclink = async(req,res) =>{
+  const coordinates = {
+    longitude : req.body.longitude,
+    latitude : req.body.latitude
+  }
+
+  const link = `https://www.google.com/maps/search/?api=1&query=${coordinates.latitude},${coordinates.longitude}`;
+  console.log("msg sent!")
+  return  res.status(200).send({ link })
 }
 
 export const getallHst = async(req,res) => {
@@ -118,7 +147,7 @@ export const getHistory = async(req,res) => {
     for (let i = 0; i < sosHistory.length; i++) {
       const historyItem = sosHistory[i];
       historyBody += `SOS triggered from: ${historyItem.primary_mobile},
-                       location link: https://www.google.com/maps/search/?api=1&query=${historyItem.lat},${historyItem.lon} ,
+                       location link: http://localhost:3000/api/user/dynamiclink ,
                        Time when SOS triggered ${historyItem.time},
                        SOS messages set to: ${historyItem.guardians},
                        Battery life: ${historyItem.battery_life},

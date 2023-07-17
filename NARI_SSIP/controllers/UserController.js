@@ -106,7 +106,7 @@ export const getuser = async(req, res) =>{
 
 export const upDateUser = async (req, res) => {
 
-  await Promise.all(SignUpValidator.validation.map(validation => validation.run(req)))
+  await Promise.all(SignUpValidator.validation?.map(validation => validation.run(req)) ?? []);
   const errors = validationResult(req)
 
   if (!errors.isEmpty()) {

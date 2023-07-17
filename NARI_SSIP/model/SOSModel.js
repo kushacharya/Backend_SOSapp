@@ -8,8 +8,6 @@ const PostSchema = new mongoose.Schema({
 
    primary_mobile:{
     type: String,
-    unique : true
-   //  required: true
    },
 
    name:{
@@ -47,4 +45,4 @@ const PostSchema = new mongoose.Schema({
    }
 })
 
-export default mongoose.model("post",PostSchema)
+export default mongoose.model("Post",PostSchema)
