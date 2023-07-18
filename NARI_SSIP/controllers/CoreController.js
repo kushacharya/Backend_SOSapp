@@ -115,7 +115,7 @@ export const dynamiclink = async(req,res) =>{
 
   const link = `https://www.google.com/maps/search/?api=1&query=${coordinates.latitude},${coordinates.longitude}`;
   console.log("msg sent!")
-  return  res.status(200).send('https://www.google.com/maps/search/?api=1&query=${coordinates.latitude},${coordinates.longitude')
+  return  res.status(200).send({coordinates})
 }
 
 export const getallHst = async(req,res) => {
