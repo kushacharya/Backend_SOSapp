@@ -3,6 +3,7 @@ import {getAllUser, getuser, upDateUser} from '../controllers/UserController.js'
 import { sosbody,getHistory, /*getallHst*/ dynamiclink} from "../controllers/CoreController.js";
 import {signup, login, logout, OTPAuth, verifyOTP } from "../controllers/AuthController.js"
 const router = express.Router();
+router.use(express.static('public'))
 
 //TODO exposing all users is a big privacy concern. Not required unless it has a significant business impact.
 router.get('/',getAllUser);
@@ -23,7 +24,7 @@ router.post('/dynamiclink',dynamiclink)
 
 // AuthController
 router.post('/signup', signup);  //also in user control as i merged post req to signup (It will send all user data in server at the time of signup)
-router.post('/login', login);
+router.post('/login', login); // not in use
 router.post('/logout',logout);
 router.post('/otp',OTPAuth);
 router.post('/verifyotp',verifyOTP);

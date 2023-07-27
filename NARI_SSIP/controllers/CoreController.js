@@ -154,7 +154,7 @@ export const getHistory = async(req,res) => {
                        Total count of SOS: ${historyItem.count}\n`;
     }
 
-    res.status(200).json({historyBody});
+    res.status(200).send({historyBody});
   }
   catch(err){
     console.log(err);

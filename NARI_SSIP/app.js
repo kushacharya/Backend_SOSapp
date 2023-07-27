@@ -10,6 +10,7 @@ const MONGODB = process.env.MONGODB;
 const app = express();
 app.use(express.json({limit: '75mb'}));
 app.use('/api/user', router);
+app.use(express.static('public'));
 
 mongoose.set('strictQuery', false);
 mongoose
