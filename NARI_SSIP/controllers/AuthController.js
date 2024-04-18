@@ -202,7 +202,7 @@ export const signup = async (req, res) => {
   
     //  res.json(AuthToken);
     res.cookie('jwtToken',AuthToken,{httpOnly:true});
-      try {
+    try {
       await user.save();
     } catch (err) {
       return console.log(err);

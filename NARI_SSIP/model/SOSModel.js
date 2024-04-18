@@ -1,10 +1,7 @@
 import mongoose from 'mongoose';
 
 const PostSchema = new mongoose.Schema({
-   user_id:{
-    type: String,
-   //  required:true
-   },
+   
 
    primary_mobile:{
     type: String,
@@ -42,7 +39,16 @@ const PostSchema = new mongoose.Schema({
 
    count:{
     type: String
-   }
+   },
+
+   bloodgroup : {
+      type :String
+   },
+
+   gender : {
+      type : String
+   },
+   
 })
 
 export default mongoose.model("Post",PostSchema)

@@ -1,9 +1,10 @@
 /* eslint-disable no-unused-vars */
 import 'dotenv/config';
 import twilio from 'twilio'
-import Post  from "../model/SOSModel.js";
+import Post  from "../model/SOSModel.js"; //change
 import { validationResult } from 'express-validator';
 import { SOSvalidator } from './utils/Validators.js'
+import { Types } from 'mongoose';
 
 
 // eslint-disable-next-line no-undef
@@ -17,6 +18,8 @@ const client = new twilio(sid,Auth,{
   });
 
 export const sosbody = async(req,res) => {
+
+  let sosObjectId;
 
   // validaion in sos body req??
   await Promise.all(SOSvalidator.map(validation => validation.run(req)))
@@ -36,7 +39,9 @@ export const sosbody = async(req,res) => {
         time : req.body.time,
         guardians : req.body.guardians,
         battery_life : req.body.battery_life,
-        count : req.body.count
+        count : req.body.count,
+        bloodgroup : req.body.bloodgroup,
+        gender : req.body.gender,
     }
 
     //It will save User's SOS history
@@ -49,15 +54,25 @@ export const sosbody = async(req,res) => {
       time : req.body.time,
       guardians : req.body.guardians,
       battery_life : req.body.battery_life,
-      count : req.body.count
+      count : req.body.count,
+      bloodgroup : req.body.bloodgroup,
+      gender : req.body.gender,
+
     });
 
     try {
-      await sosTrig.save();
+      const savedSosTrig = await sosTrig.save();
       console.log("saved in db");
+
+      sosObjectId = savedSosTrig._id;
+      console.log("ObjectId",sosObjectId);
+
       } catch (err) {
       console.log(err);
     }
+
+    
+   
     // res.json({message: "SOS message saved in history"});  //optional: no need to send json
     if (reqbody.checkString == "sms") { 
       
@@ -66,18 +81,20 @@ export const sosbody = async(req,res) => {
    const latitude = reqbody.lat;
    const longitude = reqbody.lon;
    const numbers = ['+91 87350 54157','+919427437463']
-   const link = `http://localhost:3000/api/user/dynamiclink`;
+   const link = `domainlink/${sosObjectId}`;
    
     const smsbody = `link : ${link}
                     SOS triggered by : ${reqbody.name}
+                    gender : ${reqbody.gender}
+                    bloodgroup : ${reqbody.bloodgroup}
                     User mobile number : ${reqbody.primary_mobile}
                     SOS trigger time : ${reqbody.time}
                     battery life of mobile : ${reqbody.battery_life}
                     SOS trigger count : ${reqbody.count}
-                    mobile-numbers of guardians : ${reqbody.guardians}`                    
-
+                    mobile-numbers of guardians : ${reqbody.guardians}`
                     console.log(smsbody);
-    try{       
+
+     try{       
       
       // will uncomment when I have api
    client.messages.create({
@@ -88,7 +105,7 @@ export const sosbody = async(req,res) => {
    }).then((message)  => {
      res.status(200).json({message : "SOS msg sent succesfully!"});
    })
-  console.log(smsbody);
+  res.status(200).json({message : "SOS msg sent succesfully!"});
 
   // res.status(200).json({message:"SMS sent!"});
     }
@@ -108,14 +125,40 @@ export const sosbody = async(req,res) => {
 }
 
 export const dynamiclink = async(req,res) =>{
-  const coordinates = {
-    longitude : req.body.longitude,
-    latitude : req.body.latitude
-  }
+    const reqbody = {
+      checkString : req.body.checkString,
+      primary_mobile : req.body.primary_mobile,
+      name : req.body.name,
+      lat : req.body.lat,
+      lon : req.body.lon,
+      time : req.body.time,
+      guardians : req.body.guardians,
+      battery_life : req.body.battery_life,
+      count : req.body.count,
+      bloodgroup : req.body.bloodgroup,
+      gender : req.body.gender,
+    }
 
-  const link = `https://www.google.com/maps/search/?api=1&query=${coordinates.latitude},${coordinates.longitude}`;
-  console.log("msg sent!")
-  return  res.status(200).send({coordinates})
+    
+
+    const updateField ={
+      lat : req.body.lat,
+      lon: req.body.lon
+      }
+
+    try {
+      const updateSOSTrig = await Post.findOneAndUpdate({primary_mobile:reqbody.primary_mobile},{$set : updateField},{new : true});
+
+      if (!updateSOSTrig) {
+        return res.status(404).json({ error : "Document not found!" });
+      }
+
+      console.log("Updated document:",updateSOSTrig);
+      return res.status(200).json({ message : "Document updated!", updateSOSTrig });
+    } catch(err){
+      return res.status(500).json({ error: "Failed to update document" });
+    }
+
 }
 
 export const getallHst = async(req,res) => {
@@ -147,7 +190,7 @@ export const getHistory = async(req,res) => {
     for (let i = 0; i < sosHistory.length; i++) {
       const historyItem = sosHistory[i];
       historyBody += `SOS triggered from: ${historyItem.primary_mobile},
-                       location link: http://localhost:3000/api/user/dynamiclink ,
+                       location link: 'domainlink' ,
                        Time when SOS triggered ${historyItem.time},
                        SOS messages set to: ${historyItem.guardians},
                        Battery life: ${historyItem.battery_life},

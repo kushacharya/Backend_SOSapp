@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 import 'dotenv/config';
 import User from '../model/UserModel.js';
+import ReportSchema from '../model/BugReportModel.js'
 // import Post  from "../model/SOSModel.js";
 import bcryptjs from 'bcryptjs';
 import jwt from 'jsonwebtoken';
@@ -198,13 +199,13 @@ export const testing = async(req,res, next) =>{
        res.status(400).json({message:"Can't find User from this ID"});
     }
 
-    // client.messages.create({
-    //   body:'link: ${req.link} and user details are ${userDetailsforSMS}',
-    //   from:'+15074794666',
-    //   to:'+919427437463'
-    // }).then((message) =>{
-    //   res.status(200).json({message:"message sent succesfully!"});
-    // })
+    client.messages.create({
+      body:'link: ${req.link} and user details are ${userDetailsforSMS}',
+      from:'+15074794666',
+      to:'+919427437463'
+    }).then((message) =>{
+      res.status(200).json({message:"message sent succesfully!"});
+    })
 
     const locationLink = req.body.link
     const userBody = {name :userDetailsforSMS.name,
@@ -230,3 +231,24 @@ export const testing = async(req,res, next) =>{
     //   res.json({message : "SOS message sent!!"});
     // });
 }
+
+export const reportBug = async(req,res, next) =>{
+  const report = {
+    phonenumber : req.body.phonenumber,
+    bugreport : req.body.report
+  }
+
+  const newReport = new ReportSchema({
+    phonenumber : req.body.phonenumber,
+    bugreport : req.body.report
+  })
+
+   res.status(200).send({report});
+
+  try {
+    await newReport.save();
+    console.log("saved in db");
+  } catch (error) {
+   console.log("something went wrong" + error);
+  }
+};
