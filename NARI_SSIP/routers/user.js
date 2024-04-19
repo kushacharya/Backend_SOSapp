@@ -9,11 +9,6 @@ router.use(express.static('public'))
 //TODO exposing all users is a big privacy concern. Not required unless it has a significant business impact.
 router.get('/',getAllUser);
 
-// router.get('/getallhist',getallHst);
-
-// router.get('/SOS', sendSOS);
-// router.post('/testing/:id', testing)  // No use for now
-
 // USERcontroller
 router.post('/getuser', getuser);
 router.put('/updateuser/:id', upDateUser);

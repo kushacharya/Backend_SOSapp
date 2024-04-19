@@ -95,8 +95,6 @@ export const sosbody = async(req,res) => {
                     console.log(smsbody);
 
      try{       
-      
-      // will uncomment when I have api
    client.messages.create({
     body: "+919427437463",
     from : "+15074794666",
@@ -106,8 +104,6 @@ export const sosbody = async(req,res) => {
      res.status(200).json({message : "SOS msg sent succesfully!"});
    })
   res.status(200).json({message : "SOS msg sent succesfully!"});
-
-  // res.status(200).json({message:"SMS sent!"});
     }
     catch(err){
         console.log(err);
